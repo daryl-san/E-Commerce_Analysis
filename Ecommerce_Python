@@ -26,3 +26,26 @@ cols_to_convert = ['product_category','payment_method','region']
 ecom_df[cols_to_convert] = ecom_df[cols_to_convert].astype('category')
 
 print(ecom_df.info())
+print(ecom_df.describe())
+print(ecom_df.head(10))
+
+# Analyze the dataset based on info given by above prints.
+# Information we can extract:
+#     YoY store performance
+#     MoM store/product performance
+#     Best selling product
+#     Best rate product
+#     Product Table showing (filterable by store / date(?)):
+#         unit_price
+#         quantity (quantity_sold)
+#         Delivery days
+#         Customer rating
+#         Revenue
+
+ordered_df = ecom_df.sort_values(by=['order_date','product_category','region'])
+
+output_filename = 'cleaned_ordered_ecommerce_dataset.csv'
+
+# print(ordered_df.head(20))
+
+ordered_df.to_csv(output_filename, index=False)

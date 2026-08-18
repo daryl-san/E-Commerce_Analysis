@@ -25,6 +25,13 @@ ecom_df = pd.read_csv(filepath, parse_dates = ["order_date"])
 cols_to_convert = ['product_category','payment_method','region']
 ecom_df[cols_to_convert] = ecom_df[cols_to_convert].astype('category')
 
+# create new columns to store year, month, and day of sale
+ecom_df['year'] = ecom_df['order_date'].dt.year
+ecom_df['month'] = ecom_df['order_date'].dt.month
+ecom_df['day'] = ecom_df['order_date'].dt.day
+ecom_df['month_name'] = ecom_df['order_date'].dt.month_name()
+ecom_df['day_name'] = ecom_df['order_date'].dt.day_name()
+
 print(ecom_df.info())
 print(ecom_df.describe())
 print(ecom_df.head(10))

@@ -2,5 +2,27 @@
 
 import pandas as pd
 
-print("Hello World")
+# print("Hello World")
 
+# filepath = r"C:\Users\deeye\OneDrive\Desktop\Data Analytics Personal Project\E-Commerce_Analysis\Dataset\ecommerce_sales_analytics_5000"
+
+# Assign filepath for dataset into a variable, easier to manage and cleaner
+filepath = r"C:\Users\deeye\OneDrive\Desktop\Data Analytics Personal Project\E-Commerce_Analysis\Dataset\ecommerce_sales_analytics_5000.csv"
+
+# load dataset into dataframe
+ecom_df = pd.read_csv(filepath, parse_dates = ["order_date"]) 
+# ecom_df = pd.read_csv(filepath, parse_dates = ["order_date"], date_format="%d/%m/%Y") # This incase we want d/m/YYYY for date format
+
+# Check if any nulls
+# print(ecom_df.isna().sum()) # no nulls
+
+# below is for checking to see if we can turn these into categories instead of leaving as strings to save space
+# print(ecom_df['product_category'].unique())   #['Beauty' 'Clothing' 'Electronics' 'Home']
+# print(ecom_df['payment_method'].unique())     #['Wallet' 'Card' 'COD']
+# print(ecom_df['region'].unique())             #['South' 'East' 'West' 'North']
+
+# convert columns into type 'category'
+cols_to_convert = ['product_category','payment_method','region']
+ecom_df[cols_to_convert] = ecom_df[cols_to_convert].astype('category')
+
+print(ecom_df.info())

@@ -31,6 +31,7 @@ ecom_df['month'] = ecom_df['order_date'].dt.month
 ecom_df['day'] = ecom_df['order_date'].dt.day
 ecom_df['month_name'] = ecom_df['order_date'].dt.month_name()
 ecom_df['day_name'] = ecom_df['order_date'].dt.day_name()
+ecom_df['year_month'] = ecom_df['order_date'].dt.to_period("M")
 
 print(ecom_df.info())
 print(ecom_df.describe())
@@ -56,3 +57,4 @@ output_filename = 'cleaned_ordered_ecommerce_dataset.csv'
 # print(ordered_df.head(20))
 
 ordered_df.to_csv(output_filename, index=False)
+print(f"Created / Updated file: {output_filename}" )

@@ -33,9 +33,17 @@ ecom_df['month_name'] = ecom_df['order_date'].dt.month_name()
 ecom_df['day_name'] = ecom_df['order_date'].dt.day_name()
 ecom_df['year_month'] = ecom_df['order_date'].dt.to_period("M")
 
-print(ecom_df.info())
-print(ecom_df.describe())
-print(ecom_df.head(10))
+# ( unit_price * (1-discount) ) * quantity = revenue
+# get pre-discount revenue
+ecom_df['pre_discount_revenue'] = ecom_df['unit_price'] * ecom_df['quantity']
+
+
+
+
+
+# print(ecom_df.info())
+# print(ecom_df.describe())
+# print(ecom_df.head(10))
 
 # Analyze the dataset based on info given by above prints.
 # Information we can extract:
@@ -52,9 +60,11 @@ print(ecom_df.head(10))
 
 ordered_df = ecom_df.sort_values(by=['order_date','product_category','region'])
 
+print(ordered_df.head(20))
+
 output_filename = 'cleaned_ordered_ecommerce_dataset.csv'
 
-# print(ordered_df.head(20))
+# # print(ordered_df.head(20))
 
 ordered_df.to_csv(output_filename, index=False)
 print(f"Created / Updated file: {output_filename}" )

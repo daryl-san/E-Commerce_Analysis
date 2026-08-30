@@ -1,6 +1,8 @@
 
 
 import pandas as pd
+import random
+from faker import Faker
 
 # print("Hello World")
 
@@ -37,7 +39,7 @@ ecom_df['year_month'] = ecom_df['order_date'].dt.to_period("M")
 # get pre-discount revenue
 ecom_df['pre_discount_revenue'] = ecom_df['unit_price'] * ecom_df['quantity']
 
-
+ecom_df['revenue_discounted_from_purchase'] = ecom_df['pre_discount_revenue'] - ecom_df['revenue']
 
 
 
@@ -59,12 +61,48 @@ ecom_df['pre_discount_revenue'] = ecom_df['unit_price'] * ecom_df['quantity']
 #         Revenue
 
 ordered_df = ecom_df.sort_values(by=['order_date','product_category','region'])
+# print(ordered_df.head(10))
 
-print(ordered_df.head(20))
+# output_filename = 'cleaned_ordered_ecommerce_dataset.csv'
+# ordered_df.to_csv(output_filename, index=False)
+# print(f"Created / Updated file: {output_filename}" )
 
-output_filename = 'cleaned_ordered_ecommerce_dataset.csv'
+#Creating fake customer profiles
+#  - customer_id
+#  - name
+#  - gender
 
-# # print(ordered_df.head(20))
+#extract all unique customer_id from ecom dataframe
+customer_id_df = ordered_df['customer_id'].drop_duplicates().reset_index(drop=True)
 
-ordered_df.to_csv(output_filename, index=False)
-print(f"Created / Updated file: {output_filename}" )
+print(customer_id_df.iloc[19])
+# print(customer_id_df.size)
+
+# unique_customer_id = customer_id_df.size()
+
+fake = Faker()
+
+def generate_customers(n):
+    data=[]
+    for _ in range(n):
+        gender = random.choice(['male','female'])
+        if(gender == 'male'):
+            first_name = fake.first_name_male()
+        else:
+            first_name = fake.first_name_female()      
+        last_name = fake.last_name()
+        
+        data.append({
+            'customer_id': customer_id_df.iloc(_),
+            'first_name': first_name,
+            'last_name': last_name,
+            'full_name': f"{first_name} {last_name}",
+            'gender': gender
+        })
+    return pd.DataFrame(data)
+
+customer_df = generate_customers(customer_id_df.size)
+
+print(customer_df.head(20))
+        
+

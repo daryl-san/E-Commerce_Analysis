@@ -63,9 +63,7 @@ ecom_df['revenue_discounted_from_purchase'] = ecom_df['pre_discount_revenue'] - 
 ordered_df = ecom_df.sort_values(by=['order_date','product_category','region'])
 # print(ordered_df.head(10))
 
-# output_filename = 'cleaned_ordered_ecommerce_dataset.csv'
-# ordered_df.to_csv(output_filename, index=False)
-# print(f"Created / Updated file: {output_filename}" )
+
 
 #Creating fake customer profiles
 #  - customer_id
@@ -75,7 +73,7 @@ ordered_df = ecom_df.sort_values(by=['order_date','product_category','region'])
 #extract all unique customer_id from ecom dataframe
 customer_id_df = ordered_df['customer_id'].drop_duplicates().reset_index(drop=True)
 
-print(customer_id_df.iloc[19])
+# print(customer_id_df.iloc[19])
 # print(customer_id_df.size)
 
 # unique_customer_id = customer_id_df.size()
@@ -84,6 +82,7 @@ fake = Faker()
 
 def generate_customers(n):
     data=[]
+    i = 0
     for _ in range(n):
         gender = random.choice(['male','female'])
         if(gender == 'male'):
@@ -93,16 +92,31 @@ def generate_customers(n):
         last_name = fake.last_name()
         
         data.append({
-            'customer_id': customer_id_df.iloc(_),
+            'customer_id': customer_id_df.iloc[i],
             'first_name': first_name,
             'last_name': last_name,
             'full_name': f"{first_name} {last_name}",
             'gender': gender
         })
+        i = i+1
     return pd.DataFrame(data)
 
 customer_df = generate_customers(customer_id_df.size)
+# print(customer_id_df.info())
+# print(customer_df.head(20))
 
-print(customer_df.head(20))
-        
+
+
+#### Below are CSV outputs from above work
+
+## output the ecommerce dataset
+# output_filename = 'cleaned_ordered_ecommerce_dataset.csv'
+# ordered_df.to_csv(output_filename, index=False)
+# print(f"Created / Updated file: {output_filename}" )
+
+## output the custom customer_id dataset
+
+customer_file_name = 'ecommerce_customer.csv'
+customer_df.to_csv(customer_file_name, index=False)
+print(f"Created / Updated file: {customer_file_name}" )
 
